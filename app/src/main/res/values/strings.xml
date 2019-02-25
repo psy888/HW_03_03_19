@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">HomeWork_03_03_2019</string>
+    <string name="game_label_tictactoe">Крестики нолики</string>
+    <string name="game_label_tag">Пятнашки</string>
+
+    <string name="label_currentMove">Текущий ход: </string>
+
+
+</resources>

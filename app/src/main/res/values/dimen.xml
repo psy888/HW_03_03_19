@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="stdMargin">24dp</dimen>
+    <dimen name="labelSize">28sp</dimen>
+    <dimen name="secondaryTextSize">24sp</dimen>
+
+    <!--TicTacToe-->
+    <dimen name="row_height">100dp</dimen>
+    <dimen name="figureSize">32sp</dimen>
+</resources>
