@@ -1,0 +1,142 @@
+package com.psy.homework_03_03_2019;
+
+import android.content.Context;
+import android.content.res.Resources;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.GridLayout;
+import android.widget.TextView;
+
+public class tttController {
+
+    private static final String TAG = "tttController";
+    private Context mContext;
+    private TicTacToe mGame;
+//    private int mMoveCnt = 0;
+    private int mCurTurn;
+    private int  mSize;
+    private boolean mIsEnded = false;
+
+
+    /**
+     * Конструктор
+     * @param size - размер игрового поля
+     */
+    public tttController(Context context, int size, int turn)
+    {
+        mContext = context;
+        mCurTurn = turn;
+        mSize = size;
+        mGame = new TicTacToe(mSize);
+    }
+
+    /**
+     * Создание игрового поля из модели
+     * @param inflater - layoutInflater
+     * @param gameField - Родительский элемент игрового поля
+     * @param clickListener - setOnClickListener на каждый элемент игрового поля
+     */
+    public void createGameField(LayoutInflater inflater,GridLayout gameField, MainActivity.TicTacToeClick clickListener)
+    {
+        gameField.setRowCount(mSize);
+        gameField.setColumnCount(mSize);
+        for (int i = 0; i < mSize*mSize; i++)
+        {
+            TextView cell = (TextView) inflater.inflate(R.layout.cell_tictactoe, gameField, false);
+            cell.setId(10000+i);
+            cell.setText(getPlayerSign(mGame.getGameField()[i]));
+            gameField.addView(cell);
+            cell.setOnClickListener(clickListener);
+        }
+    }
+
+    /**
+     * очистка UI игрового поля
+     * @param gameField - Родительский элемент игрового поля
+     */
+    private void clearUIGameField(GridLayout gameField)
+    {
+        int cnt = gameField.getChildCount();
+        for (int i = 0; i < cnt; i++) {
+            TextView tv = (TextView) gameField.getChildAt(i);
+            tv.setText(getPlayerSign(mGame.getGameField()[i]));
+        }
+    }
+
+    /**
+     *
+     * @param gameField - Родительский элемент игрового поля
+     * @param currentTurn - Текстовое поле отображения текущего игрока
+     */
+    void restartGame(GridLayout gameField, TextView currentTurn)
+    {
+        //Clear model
+        mGame.clearGameField();
+        //Clear UI
+        clearUIGameField(gameField);
+        //ResetTurn
+        mCurTurn = TicTacToe.PLAYER_X;
+        //Reset EndGame flag
+        mIsEnded = false;
+        //Update UI current turn
+        currentTurn.setText(getPlayerSign(mCurTurn));
+    }
+
+    /**
+     * Получить Символ игрока
+     * @param turn - Числовая константа игрока PLAYER X = 1; PLAYER O = -1;
+     * @return Х или О
+     */
+    private String getPlayerSign(int turn)
+    {
+        switch (turn)
+        {
+            case TicTacToe.PLAYER_X:
+                return "X";
+            case TicTacToe.PLAYER_O:
+                return "O";
+            default:
+                return "";
+        }
+    }
+
+    /**
+     * Сделать ход
+     * @param cellId - ячейка игрового поля
+     * @param currentTurn - текущий игрок
+     */
+    void setMove(int cellId, View currentCell, TextView currentTurn)
+    {
+        TextView curCell = null;
+        try
+        {
+            curCell = (TextView) currentCell;
+        }
+        catch (ClassCastException e)
+        {
+            Log.e(TAG, e.getMessage());
+        }
+
+        boolean isSuccess = mGame.setMove(cellId, mCurTurn);
+
+        if(isSuccess&&curCell!=null)
+        {
+            if (mGame.checkResult(mCurTurn) == 0) {
+                curCell.setText(getPlayerSign(mCurTurn));
+                mCurTurn = -mCurTurn;
+                currentTurn.setText(getPlayerSign(mCurTurn));
+            } else {
+                curCell.setText(getPlayerSign(mCurTurn));
+                mIsEnded = true;
+                String winMsg =  mContext.getResources().getString(R.string.win_message) +" "+ getPlayerSign(mCurTurn);
+                currentTurn.setText(winMsg);
+            }
+        }
+    }
+
+    boolean isEnded()
+    {
+        return mIsEnded;
+    }
+}

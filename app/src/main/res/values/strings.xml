@@ -4,6 +4,7 @@
     <string name="game_label_tag">Пятнашки</string>
 
     <string name="label_currentMove">Текущий ход: </string>
+    <string name="win_message">Победа игрока </string>
 
 
 </resources>
