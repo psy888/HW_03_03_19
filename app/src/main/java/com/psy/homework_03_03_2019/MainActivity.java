@@ -6,14 +6,13 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.GridLayout;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
     private int mCurrentGameResId = 0;
 
-    tttController tttcontroller;
+    TTTController tttcontroller;
 
     TextView tvCurrentTurn;
     GridLayout gameField;
@@ -28,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
         if(savedInstanceState!=null)
         {
             mCurrentGameResId = savedInstanceState.getInt("CurrentGameResId");
+            tttcontroller = new TTTController(this,savedInstanceState.getByteArray("savedGame"));
         }
         else
         {
@@ -39,7 +39,9 @@ public class MainActivity extends AppCompatActivity {
 
         if(mCurrentGameResId == R.layout.activity_tic_tac_toe)
         {
-            tttcontroller = new tttController(this,4,TicTacToe.PLAYER_X);
+            if(tttcontroller==null) {
+                tttcontroller = new TTTController(this, 3, TicTacToe.PLAYER_X);
+            }
             gameField = findViewById(R.id.gameField);
             tvCurrentTurn = findViewById(R.id.currentTurn);
 
@@ -52,12 +54,14 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt("CurrentGameResId", mCurrentGameResId);
+        outState.putByteArray("savedGame",tttcontroller.saveGame());
     }
 
     @Override

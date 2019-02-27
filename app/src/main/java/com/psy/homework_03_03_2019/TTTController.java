@@ -1,16 +1,15 @@
 package com.psy.homework_03_03_2019;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.GridLayout;
 import android.widget.TextView;
 
-public class tttController {
+public class TTTController {
 
-    private static final String TAG = "tttController";
+    private static final String TAG = "TTTController";
     private Context mContext;
     private TicTacToe mGame;
 //    private int mMoveCnt = 0;
@@ -23,12 +22,23 @@ public class tttController {
      * Конструктор
      * @param size - размер игрового поля
      */
-    public tttController(Context context, int size, int turn)
+    public TTTController(Context context, int size, int turn)
     {
         mContext = context;
         mCurTurn = turn;
         mSize = size;
         mGame = new TicTacToe(mSize);
+    }
+    /**
+     * Конструктор
+     * @param savedGame - размер игрового поля
+     */
+    public TTTController(Context context, byte[] savedGame)
+    {
+        mContext = context;
+        mCurTurn = savedGame[0];
+        mSize = (int)Math.sqrt((double) savedGame.length-1);
+        mGame = new TicTacToe(savedGame);
     }
 
     /**
@@ -43,7 +53,22 @@ public class tttController {
         gameField.setColumnCount(mSize);
         for (int i = 0; i < mSize*mSize; i++)
         {
-            TextView cell = (TextView) inflater.inflate(R.layout.cell_tictactoe, gameField, false);
+            TextView cell = (TextView) inflater.inflate(R.layout.cell, gameField, false);
+            int cellSizePx = 0;
+            switch (mSize)
+            {
+                case 3:
+                    cellSizePx = mContext.getResources().getDimensionPixelSize(R.dimen.row_height_threeCell);
+                    break;
+                case 4:
+                    cellSizePx = mContext.getResources().getDimensionPixelSize(R.dimen.row_height_fourCell);
+                    break;
+                case 5:
+                    cellSizePx = mContext.getResources().getDimensionPixelSize(R.dimen.row_height_fiveCell);
+                    break;
+            }
+            cell.setHeight(cellSizePx);
+            cell.setWidth(cellSizePx);
             cell.setId(10000+i);
             cell.setText(getPlayerSign(mGame.getGameField()[i]));
             gameField.addView(cell);
@@ -138,5 +163,20 @@ public class tttController {
     boolean isEnded()
     {
         return mIsEnded;
+    }
+
+    /**
+     * Сохранить текущее состояние игрового поля в байтовый массив
+     * @return игровое поле в виде byteArray
+     */
+    byte[] saveGame()
+    {
+        byte[] curGameField = new byte[mGame.getGameField().length + 1];
+        curGameField[0] = (byte) mCurTurn;
+        for (int i = 1; i < mGame.getGameField().length; i++)
+        {
+            curGameField[i] = (byte) mGame.getGameField()[i-1];
+        }
+        return curGameField;
     }
 }

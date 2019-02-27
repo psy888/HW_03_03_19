@@ -2,23 +2,42 @@ package com.psy.homework_03_03_2019;
 //Крестики - нолики
 public class TicTacToe
 {
-    private int[] mGameField;
-    private int mSize;
-    public static final int PLAYER_X = 1;
-    public static final int PLAYER_O = -1;
+    private int[] mGameField; // Игровое поле
+    private int mSize; //размер игрового поля mSize x mSize
+    static final int PLAYER_X = 1;
+    static final int PLAYER_O = -1;
+
+    /**
+     * создание новой игры
+     * @param size - размер одной грани игрового поля
+     */
+    public TicTacToe(int size)
+    {
+        this.mSize = size;
+        this.mGameField = new int[size*size];
+    }
+
+    /**
+     * Восстановление сохраненной игры
+     * @param gameField - сохраненное
+     */
+    public TicTacToe(byte[] gameField)
+    {
+        this.mSize = (int)Math.sqrt((double) gameField.length -1);
+        this.mGameField = new int[gameField.length - 1];
+        for (int i = 0; i < gameField.length-1; i++) {
+            mGameField[i] = gameField[i+1];
+        }
+    }
 
     public int[] getGameField() {
         return mGameField;
     }
 
+
+
     public void clearGameField() {
         mGameField = new int[mSize*mSize];
-    }
-
-    public TicTacToe(int size)
-    {
-        this.mSize = size;
-        this.mGameField = new int[size*size];
     }
 
     public boolean setMove(int position, int player)
@@ -88,8 +107,6 @@ public class TicTacToe
         {
             return 1;
         }
-        resultCnt = 0;
-//todo: if won reset game field
         return 0;
     }
 }

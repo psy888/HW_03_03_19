@@ -42,86 +42,12 @@
         android:layout_height="match_parent"
         android:layout_gravity="center">
         <GridLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_margin="25dp"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="@dimen/row_height"
             android:id="@+id/gameField">
-            <!--
-            <TextView
-                android:layout_width="@dimen/row_height"
-                android:layout_height="@dimen/row_height"
-                android:id="@+id/zero"
-                tools:text="0"
-                android:textSize="@dimen/figureSize"
-                android:gravity="center"
-                android:background="@drawable/border"/>
-            <TextView
-                android:layout_width="@dimen/row_height"
-                android:layout_height="@dimen/row_height"
-                android:id="@+id/one"
-                android:textSize="@dimen/figureSize"
-                android:gravity="center"
-                tools:text="1"
-                android:background="@drawable/border"/>
-            <TextView
-                android:layout_width="@dimen/row_height"
-                android:layout_height="@dimen/row_height"
-                android:id="@+id/two"
-                android:textSize="@dimen/figureSize"
-                android:gravity="center"
-                tools:text="2"
-                android:background="@drawable/border"/>
-            <TextView
-                android:layout_width="@dimen/row_height"
-                android:layout_height="@dimen/row_height"
-                android:id="@+id/three"
-                android:textSize="@dimen/figureSize"
-                android:gravity="center"
-                tools:text="3"
-                android:background="@drawable/border"/>
-            <TextView
-                android:layout_width="@dimen/row_height"
-                android:layout_height="@dimen/row_height"
-                android:id="@+id/four"
-                android:textSize="@dimen/figureSize"
-                android:gravity="center"
-                tools:text="4"
-                android:background="@drawable/border"/>
-            <TextView
-                android:layout_width="@dimen/row_height"
-                android:layout_height="@dimen/row_height"
-                android:id="@+id/five"
-                android:textSize="@dimen/figureSize"
-                android:gravity="center"
-                tools:text="5"
-                android:background="@drawable/border"/>
-            <TextView
-                android:layout_width="@dimen/row_height"
-                android:layout_height="@dimen/row_height"
-                android:id="@+id/six"
-                android:textSize="@dimen/figureSize"
-                android:gravity="center"
-                tools:text="6"
-                android:background="@drawable/border"/>
-            <TextView
-                android:layout_width="@dimen/row_height"
-                android:layout_height="@dimen/row_height"
-                android:id="@+id/seven"
-                android:textSize="@dimen/figureSize"
-                android:gravity="center"
-                tools:text="7"
-                android:background="@drawable/border"/>
-            <TextView
-                android:layout_width="@dimen/row_height"
-                android:layout_height="@dimen/row_height"
-                android:id="@+id/eight"
-                android:textSize="@dimen/figureSize"
-                android:gravity="center"
-                tools:text="8"
-                android:background="@drawable/border"/>
-                -->
+
         </GridLayout>
     </FrameLayout>
 

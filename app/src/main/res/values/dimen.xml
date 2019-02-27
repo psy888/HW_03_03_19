@@ -5,6 +5,8 @@
     <dimen name="secondaryTextSize">24sp</dimen>
 
     <!--TicTacToe-->
-    <dimen name="row_height">100dp</dimen>
+    <dimen name="row_height_threeCell">100dp</dimen>
+    <dimen name="row_height_fourCell">80dp</dimen>
+    <dimen name="row_height_fiveCell">70dp</dimen>
     <dimen name="figureSize">32sp</dimen>
 </resources>
