@@ -13,12 +13,14 @@ public class Tag
     {
         mSize = size;
         mGameField = new int[mSize][mSize];
+        fillGameField();
+        shuffleGameField();
     }
 
     /**
      * Заполнение игрового поля по порядку значениями от 0 до ..
      */
-    void fillGameField()
+    private void fillGameField()
     {
         int value = 0;
         //Rows
@@ -36,7 +38,7 @@ public class Tag
     /**
      * Перемешать значения на игровом поле
      */
-    void shuffleGameField()
+    private void shuffleGameField()
     {
         //rows
         for (int i = 0; i < mSize; i++) {
@@ -87,13 +89,13 @@ public class Tag
         }
         return false;
     }
-
+/*
     /**
      * Сделать ход
      * @param rowSrc - ряд текущей
      * @param columnSrc - колонка текущей
      * @return - true успешно / false нет свободной ячейки рядом
-     */
+
     boolean setMove(int rowSrc, int columnSrc)
     {
         int[] rc = checkDirrection(rowSrc,columnSrc);
@@ -103,6 +105,23 @@ public class Tag
             return true;
         }
         return false;
+    }
+    */
+    /**
+     * Сделать ход
+     * @param srcRow - ряд текущей
+     * @param srcColumn - колонка текущей
+     * @return - int[]{srcRow,srcColumn,dstRow,dstColumn}координыты источника и назначения/ null - нет свободной ячейки рядом
+     */
+    int[] setMove(int srcRow, int srcColumn)
+    {
+        int[] dstCoordinates = checkDirrection(srcRow,srcColumn);
+        if(dstCoordinates[0]!=-1)
+        {
+            swapCells(srcRow,srcColumn,dstCoordinates[0],dstCoordinates[1]);
+            return new int[]{srcRow,srcColumn,dstCoordinates[0],dstCoordinates[1]};
+        }
+        return null;
     }
 
     /**

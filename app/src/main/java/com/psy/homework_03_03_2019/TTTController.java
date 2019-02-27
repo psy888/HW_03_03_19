@@ -90,7 +90,7 @@ public class TTTController {
     }
 
     /**
-     *
+     * Перезапус игры
      * @param gameField - Родительский элемент игрового поля
      * @param currentTurn - Текстовое поле отображения текущего игрока
      */
@@ -147,12 +147,11 @@ public class TTTController {
 
         if(isSuccess&&curCell!=null)
         {
+            curCell.setText(getPlayerSign(mCurTurn));
             if (mGame.checkResult(mCurTurn) == 0) {
-                curCell.setText(getPlayerSign(mCurTurn));
                 mCurTurn = -mCurTurn;
                 currentTurn.setText(getPlayerSign(mCurTurn));
             } else {
-                curCell.setText(getPlayerSign(mCurTurn));
                 mIsEnded = true;
                 String winMsg =  mContext.getResources().getString(R.string.win_message) +" "+ getPlayerSign(mCurTurn);
                 currentTurn.setText(winMsg);

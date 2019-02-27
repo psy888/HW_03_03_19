@@ -12,11 +12,18 @@ import android.widget.TextView;
 public class MainActivity extends AppCompatActivity {
     private int mCurrentGameResId = 0;
 
-    TTTController tttcontroller;
 
+    //TicTacToe
+    TTTController mTTTController;
     TextView tvCurrentTurn;
-    GridLayout gameField;
-    TicTacToeClick tttcl;
+    GridLayout TTTGameField;
+    TicTacToeClick mTicTacToeClick;
+    //Tag
+    TagController mTagController;
+    TextView tvMovesCnt;
+    GridLayout TagGameField;
+    TagClick mTagClick;
+
     LayoutInflater inflater;
 
 
@@ -27,11 +34,12 @@ public class MainActivity extends AppCompatActivity {
         if(savedInstanceState!=null)
         {
             mCurrentGameResId = savedInstanceState.getInt("CurrentGameResId");
-            tttcontroller = new TTTController(this,savedInstanceState.getByteArray("savedGame"));
+            mTTTController = new TTTController(this,savedInstanceState.getByteArray("savedGame"));
         }
         else
         {
-            mCurrentGameResId = R.layout.activity_tic_tac_toe;
+//            mCurrentGameResId = R.layout.activity_tic_tac_toe;
+            mCurrentGameResId = R.layout.activity_tag;
         }
 
         setContentView(mCurrentGameResId);
@@ -39,15 +47,29 @@ public class MainActivity extends AppCompatActivity {
 
         if(mCurrentGameResId == R.layout.activity_tic_tac_toe)
         {
-            if(tttcontroller==null) {
-                tttcontroller = new TTTController(this, 3, TicTacToe.PLAYER_X);
+            if(mTTTController ==null) {
+                mTTTController = new TTTController(this, 3, TicTacToe.PLAYER_X);
             }
-            gameField = findViewById(R.id.gameField);
+            TTTGameField = findViewById(R.id.TTTgameField);
             tvCurrentTurn = findViewById(R.id.currentTurn);
 
-            tttcl = new TicTacToeClick();
+            mTicTacToeClick = new TicTacToeClick();
 
-            tttcontroller.createGameField(inflater, gameField, tttcl);
+            mTTTController.createGameField(inflater, TTTGameField, mTicTacToeClick);
+        }
+        if (mCurrentGameResId == R.layout.activity_tag)
+        {
+            if(mTagController == null)
+            {
+                mTagController = new TagController(this, 3);
+            }
+                TagGameField = findViewById(R.id.TagGameField);
+                tvMovesCnt = findViewById(R.id.movesCnt);
+
+                mTagClick = new TagClick();
+
+                mTagController.createGameField(inflater, TagGameField, mTagClick);
+
         }
 
 
@@ -61,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt("CurrentGameResId", mCurrentGameResId);
-        outState.putByteArray("savedGame",tttcontroller.saveGame());
+        outState.putByteArray("savedGame", mTTTController.saveGame());
     }
 
     @Override
@@ -75,18 +97,39 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Слушатель для "Крестики-нолики"
+     */
     protected class TicTacToeClick implements View.OnClickListener
     {
         @Override
         public void onClick(View v) {
-            if(!tttcontroller.isEnded())
+            if(!mTTTController.isEnded())
             {
                 int cellId = (v.getId()) - 10000;
-                tttcontroller.setMove(cellId, v, tvCurrentTurn);
+                mTTTController.setMove(cellId, v, tvCurrentTurn);
             }
             else
             {
-                tttcontroller.restartGame(gameField, tvCurrentTurn);
+                mTTTController.restartGame(TTTGameField, tvCurrentTurn);
+            }
+        }
+    }
+    /**
+     * Слушатель для "Пятнашки"
+     */
+    protected class TagClick implements View.OnClickListener
+    {
+        @Override
+        public void onClick(View v) {
+            if(!mTagController.isEnded())
+            {
+                int cellId = v.getId();
+                mTagController.setMove(cellId);
+            }
+            else
+            {
+                //todo:RestartGame
             }
         }
     }
