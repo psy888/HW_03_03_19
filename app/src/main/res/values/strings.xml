@@ -7,7 +7,7 @@
     <string name="win_message">Победа игрока </string>
 
     <!--Tag layout -->
-    <string name="label_movesCnt">Ходов :</string>
+    <string name="label_movesCnt">Сделано ходов :</string>
     <string name="placeholderDash">--</string>
     <string name="endgame_message">Победа!</string>
 

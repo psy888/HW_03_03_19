@@ -2,6 +2,7 @@ package com.psy.homework_03_03_2019;
 
 import android.content.Context;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.GridLayout;
@@ -12,7 +13,7 @@ public class TagController {
     private Context mContext;
     private Tag mGame;
     private int mMoveCnt = 0;
-    private int  mSize;
+    private int mSize;
     private boolean mIsEnded = false;
     private LayoutInflater mInflater;
     private GridLayout mGameField;
@@ -29,7 +30,15 @@ public class TagController {
         mTvMovesCnt = tvMovesCnt;
         mGameField = TagGameField;
     }
+    public TagController(int size)
+    {
+        mSize = size;
+        mGame = new Tag(size);
+    }
 
+    /**
+     * Создание игрового поля
+     */
     void createGameField()
     {
         mGameField.setRowCount(mSize);
@@ -274,5 +283,26 @@ public class TagController {
         for (int i = 0; i < rowData.length; i++) {
             mGame.getGameField()[row][i] = (int) rowData[i];
         }
+    }
+
+    void setContext(Context context)
+    {
+        mContext = context;
+    }
+    void setInflater(LayoutInflater inflater)
+    {
+        mInflater = inflater;
+    }
+    void setUIGameField (GridLayout gameField)
+    {
+        mGameField = gameField;
+    }
+    void setUIMovesCnt (TextView movesCnt)
+    {
+        mTvMovesCnt = movesCnt;
+    }
+    void setClickListener (MainActivity.TagClick clicklistener)
+    {
+        mClicklistener = clicklistener;
     }
 }

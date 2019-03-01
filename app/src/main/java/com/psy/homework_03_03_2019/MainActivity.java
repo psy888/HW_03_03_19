@@ -41,26 +41,37 @@ public class MainActivity extends AppCompatActivity {
 
         if(savedInstanceState!=null)
         {
+            Log.d("TAG", "savedInstanceState!=null  mTTTSize = " + mTTTSize );
+            mTTTSize = savedInstanceState.getInt("TTTSize", 3);
+            Log.d("TAG", "savedInstanceState.getInt(TagSize, 3);l  mTTTSize = " + mTTTSize );
+            mTagSize = savedInstanceState.getInt("TagSize", 3);
             mCurrentGameResId = savedInstanceState.getInt("CurrentGameResId");
-            if(savedInstanceState.getByteArray("savedGame")!=null)
-                mTTTController = new TTTController(this, savedInstanceState.getByteArray("savedGame"));
+
+            if(savedInstanceState.getByteArray("TTTSavedGame")!=null)
+                mTTTController = new TTTController(this, savedInstanceState.getByteArray("TTTSavedGame"));
             if(savedInstanceState.getByteArray("TagSavedGameRow0") != null)
             {
-                mTagSize = savedInstanceState.getInt("TagMoveCount");
-
+                int moveCountRestore = savedInstanceState.getInt("TagMoveCount");
+//                mTagSize = savedInstanceState.getByteArray("TagSavedGameRow0").length;
+                /*Log.d("TAG", "mTagSize = " + mTagSize );
                 TagGameField = findViewById(R.id.TagGameField);
+                Log.d("TAG", "TagGameField = " + TagGameField );
                 tvMovesCnt = findViewById(R.id.movesCnt);
-                mTagClick = new TagClick();
+                Log.d("TAG", "TagGameField = " + tvMovesCnt );
+                mTagClick = new TagClick();*/
 
-                mTagController = new TagController(this,inflater, mTagSize, tvMovesCnt, TagGameField, mTagClick );
+                mTagController = new TagController(mTagSize);
                 for (int i = 0; i < mTagSize; i++) {
                     mTagController.restoreGameFieldRow(i, savedInstanceState.getByteArray("TagSavedGameRow"+i));
                 }
+                mTagController.setMoveCount(moveCountRestore);
+//                mTagController.createGameField();
             }
         }
         else
         {
             mCurrentGameResId = R.layout.activity_tic_tac_toe;
+
 //            mCurrentGameResId = R.layout.activity_tag;
         }
 
@@ -70,8 +81,11 @@ public class MainActivity extends AppCompatActivity {
 
         if(mCurrentGameResId == R.layout.activity_tic_tac_toe)
         {
-            if(mTTTController ==null) {
+            Log.d("TAG", "mTTTSize = " + mTTTSize );
+            if(mTTTController == null) {
+//                mTTTSize = 3;
                 mTTTController = new TTTController(this, mTTTSize, TicTacToe.PLAYER_X);
+                Log.d("TAG", "mTTTSize = " + mTTTSize );
             }
             TTTGameField = findViewById(R.id.TTTgameField);
             tvCurrentTurn = findViewById(R.id.currentTurn);
@@ -83,12 +97,19 @@ public class MainActivity extends AppCompatActivity {
 
         if (mCurrentGameResId == R.layout.activity_tag)
         {
+            TagGameField = findViewById(R.id.TagGameField);
+            tvMovesCnt = findViewById(R.id.movesCnt);
+            mTagClick = new TagClick();
             if(mTagController == null)
             {
-                TagGameField = findViewById(R.id.TagGameField);
-                tvMovesCnt = findViewById(R.id.movesCnt);
-                mTagClick = new TagClick();
                 mTagController = new TagController(this, inflater,mTagSize, tvMovesCnt, TagGameField,mTagClick);
+            }
+            else {
+                mTagController.setContext(this);
+                mTagController.setInflater(inflater);
+                mTagController.setUIGameField(TagGameField);
+                mTagController.setUIMovesCnt(tvMovesCnt);
+                mTagController.setClickListener(mTagClick);
             }
             mTagController.createGameField();
         }
@@ -103,8 +124,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+        Log.d("TAG", "onSaveInstanceState  mTTTSize = " + mTTTSize );
         outState.putInt("CurrentGameResId", mCurrentGameResId);
-        if(mTTTController!=null) {
+        outState.putInt("TagSize", mTagSize);
+        outState.putInt("TTTSize", mTTTSize);
+
+        if(mTTTController != null) {
             outState.putByteArray("TTTSavedGame", mTTTController.saveGame());
         }
         if(mTagController != null)
@@ -114,6 +139,7 @@ public class MainActivity extends AppCompatActivity {
                 outState.putByteArray("TagSavedGameRow" + i, mTagController.saveGameRow(i));
             }
         }
+
     }
 
     @Override
@@ -124,14 +150,14 @@ public class MainActivity extends AppCompatActivity {
         MenuItem tagResumeGame = menu.findItem(R.id.TagResumeGame);
         if(mCurrentGameResId == R.layout.activity_tic_tac_toe)
         {
-            tttResumeGame.setVisible(false);
-//            menu.removeItem(R.id.TTTresumeGame);
+//            tttResumeGame.setVisible(false);
+            menu.removeItem(R.id.TTTresumeGame);
 //            tttResumeGame.set
         }
         else
         {
-            tagResumeGame.setVisible(false);
-//            menu.removeItem(R.id.TagResumeGame);
+//            tagResumeGame.setVisible(false);
+            menu.removeItem(R.id.TagResumeGame);
         }
         return super.onCreateOptionsMenu(menu);
     }
@@ -147,16 +173,19 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.TTTnewGame3x3:
                 mCurrentGameResId = R.layout.activity_tic_tac_toe;
+                mTTTController = null;
                 mTTTSize = 3;
                 recreate();
                 break;
             case R.id.TTTnewGame4x4:
                 mCurrentGameResId = R.layout.activity_tic_tac_toe;
-                mTTTSize = 4;
+                mTTTController = null;
                 recreate();
+                this.mTTTSize = 4;
                 break;
             case R.id.TTTnewGame5x5:
                 mCurrentGameResId = R.layout.activity_tic_tac_toe;
+                mTTTController = null;
                 mTTTSize = 5;
                 recreate();
                 break;
@@ -166,16 +195,19 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.TagNewGame3x3:
                 mCurrentGameResId = R.layout.activity_tag;
+                mTagController = null;
                 mTagSize = 3;
                 recreate();
                 break;
             case R.id.TagNewGame4x4:
                 mCurrentGameResId = R.layout.activity_tag;
+                mTagController = null;
                 mTagSize = 4;
                 recreate();
                 break;
             case R.id.TagNewGame5x5:
                 mCurrentGameResId = R.layout.activity_tag;
+                mTagController = null;
                 mTagSize = 5;
                 recreate();
                 break;
@@ -213,15 +245,15 @@ public class MainActivity extends AppCompatActivity {
             if(!mTagController.isEnded())
             {
                 int cellId = v.getId();
-                Log.d("TAG", "Clicked view ID = " + cellId);
+//                Log.d("TAG", "Clicked view ID = " + cellId);
                 mTagController.setMove(cellId);
             }
             else
             {
                 mTagController.newGame();
-                int cellId = v.getId();
-                Log.d("TAG", "ENDED GAME. Clicked view ID = " + cellId);
-                //todo:RestartGame
+//                int cellId = v.getId();
+//                Log.d("TAG", "ENDED GAME. Clicked view ID = " + cellId);
+//                //todo:RestartGame
             }
         }
     }
