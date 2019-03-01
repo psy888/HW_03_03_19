@@ -9,4 +9,18 @@
     <!--Tag layout -->
     <string name="label_movesCnt">Ходов :</string>
     <string name="placeholderDash">--</string>
+    <string name="endgame_message">Победа!</string>
+
+    <!-- MENU -->
+    <!-- ticTacToe MENU -->
+    <string name="TTTresumeGame">Продолжить игру</string>
+    <string name="TTTnewGame3x3">Новая игра 3х3</string>
+    <string name="TTTnewGame4x4">Новая игра 4х4</string>
+    <string name="TTTnewGame5x5">Новая игра 5х5</string>
+    <!-- ticTacToe MENU -->
+    <string name="TagResumeGame">Продолжить игру</string>
+    <string name="TagNewGame3x3">Новая игра, Легко</string>
+    <string name="TagNewGame4x4">Новая игра, Средне</string>
+    <string name="TagNewGame5x5">Новая игра, Тяжело</string>
+
 </resources>

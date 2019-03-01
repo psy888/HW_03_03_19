@@ -72,22 +72,30 @@ public class Tag
     boolean checkResult()
     {
         int val = 1;
+//        boolean result = false;
         //rows
         for (int i = 0; i < mSize; i++) {
             //columns
             for (int j = 0; j < mSize; j++) {
-                if(mGameField[i][j] == val)
+                if(mGameField[i][j] == val | (i== mSize-1&&j== mSize-1))
                 {
                     val++;
+                    //result = mSize * mSize - 1 == val;
                 }
+                /*else if(i==(mSize-1)&&j==(mSize-1)&&(mGameField[mSize-1][mSize-1]==0))
+                {
+                    return ((mSize * mSize - 1) == val);
+                }*/
                 else
                 {
-                    return mSize * mSize - 1 == val;
+                    return false;
                 }
             }
-
         }
-        return false;
+        return ((mSize * mSize+1) == val);
+
+//        result = (result == (mGameField[mSize-1][mSize-1]==0));
+//        return false;
     }
 /*
     /**
