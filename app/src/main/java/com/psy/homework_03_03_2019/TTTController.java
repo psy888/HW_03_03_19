@@ -12,7 +12,6 @@ public class TTTController {
     private static final String TAG = "TTTController";
     private Context mContext;
     private TicTacToe mGame;
-//    private int mMoveCnt = 0;
     private int mCurTurn;
     private int  mSize;
     private boolean mIsEnded = false;
