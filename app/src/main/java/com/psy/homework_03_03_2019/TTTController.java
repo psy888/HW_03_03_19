@@ -148,12 +148,18 @@ public class TTTController {
         if(isSuccess&&curCell!=null)
         {
             curCell.setText(getPlayerSign(mCurTurn));
-            if (mGame.checkResult(mCurTurn) == 0) {
+            if (mGame.checkResult() == 0) {
                 mCurTurn = -mCurTurn;
                 currentTurn.setText(getPlayerSign(mCurTurn));
-            } else {
+            }
+            else if(mGame.checkResult() == 1) {
                 mIsEnded = true;
                 String winMsg =  mContext.getResources().getString(R.string.win_message) +" "+ getPlayerSign(mCurTurn);
+                currentTurn.setText(winMsg);
+            }
+            else if(mGame.checkResult() == -1) {
+                mIsEnded = true;
+                String winMsg =  mContext.getResources().getString(R.string.draw_message);
                 currentTurn.setText(winMsg);
             }
         }

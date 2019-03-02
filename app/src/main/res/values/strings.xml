@@ -5,6 +5,7 @@
 
     <string name="label_currentMove">Текущий ход: </string>
     <string name="win_message">Победа игрока </string>
+    <string name="draw_message">Ничья!</string>
 
     <!--Tag layout -->
     <string name="label_movesCnt">Сделано ходов :</string>

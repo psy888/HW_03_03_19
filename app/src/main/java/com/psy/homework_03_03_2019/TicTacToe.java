@@ -53,7 +53,12 @@ public class TicTacToe
         }
     }
 
-    public int checkResult(int player)
+
+    /**
+     * проверка выиграша
+     * @return 0 - ничего, 1 - победа, -1 ничья
+     */
+    public int checkResult()
     {
         int resultCnt = 0;
         //rows check
@@ -106,6 +111,15 @@ public class TicTacToe
         if(Math.abs(resultCnt) == mSize)
         {
             return 1;
+        }
+        resultCnt =0;
+        //draw check
+        for (int i = 0; i < mSize*mSize; i++) {
+            resultCnt+=Math.abs(mGameField[i]);
+        }
+        if (resultCnt == mSize*mSize)
+        {
+            return -1;
         }
         return 0;
     }
