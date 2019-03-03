@@ -10,11 +10,13 @@
         android:title="@string/game_label_tictactoe"
         app:showAsAction="never">
         <menu>
-            <item
-                android:orderInCategory="110"
-                android:id="@+id/TTTresumeGame"
-                android:title="@string/TTTresumeGame"
-                app:showAsAction="never"/>
+            <group android:id="@+id/resumeTTT">
+                <item
+                    android:orderInCategory="110"
+                    android:id="@+id/TTTresumeGame"
+                    android:title="@string/TTTresumeGame"
+                    app:showAsAction="never"/>
+            </group>
             <item
                 android:orderInCategory="120"
                 android:id="@+id/TTTnewGame3x3"
@@ -38,11 +40,13 @@
         android:title="@string/game_label_tag"
         app:showAsAction="never">
         <menu>
-            <item
-                android:orderInCategory="210"
-                android:id="@+id/TagResumeGame"
-                android:title="@string/TagResumeGame"
-                app:showAsAction="never"/>
+            <group android:id="@+id/resumeTag">
+                <item
+                    android:orderInCategory="210"
+                    android:id="@+id/TagResumeGame"
+                    android:title="@string/TagResumeGame"
+                    app:showAsAction="never"/>
+            </group>
             <item
                 android:orderInCategory="220"
                 android:id="@+id/TagNewGame3x3"

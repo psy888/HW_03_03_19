@@ -12,9 +12,13 @@ public class TTTController {
     private static final String TAG = "TTTController";
     private Context mContext;
     private TicTacToe mGame;
+    private TTTAi mAi;
     private int mCurTurn;
     private int  mSize;
     private boolean mIsEnded = false;
+    private boolean mIsFirstHuman = true;
+    private int moveCnt = 0;
+    GridLayout mGameField;
 
 
     /**
@@ -27,6 +31,7 @@ public class TTTController {
         mCurTurn = turn;
         mSize = size;
         mGame = new TicTacToe(mSize);
+        mAi = new TTTAi(mGame);
     }
     /**
      * Конструктор
@@ -48,6 +53,7 @@ public class TTTController {
      */
     public void createGameField(LayoutInflater inflater,GridLayout gameField, MainActivity.TicTacToeClick clickListener)
     {
+        mGameField = gameField;
         gameField.setRowCount(mSize);
         gameField.setColumnCount(mSize);
         for (int i = 0; i < mSize*mSize; i++)
@@ -130,8 +136,10 @@ public class TTTController {
      * @param cellId - ячейка игрового поля
      * @param currentTurn - текущий игрок
      */
-    void setMove(int cellId, View currentCell, TextView currentTurn)
+    void setMove(int cellId, View currentCell, TextView currentTurn, boolean isAiEnabled)
     {
+
+
         TextView curCell = null;
         try
         {
@@ -142,26 +150,112 @@ public class TTTController {
             Log.e(TAG, e.getMessage());
         }
 
-        boolean isSuccess = mGame.setMove(cellId, mCurTurn);
+        if(moveCnt == 0&&!mIsFirstHuman)
+        {
 
+        }
+
+        boolean isSuccess = mGame.setMove(cellId, mCurTurn);
+        moveCnt++;
         if(isSuccess&&curCell!=null)
         {
-            curCell.setText(getPlayerSign(mCurTurn));
+            curCell.setText(getPlayerSign(mCurTurn)); // Update UI of clicked cell
             if (mGame.checkResult() == 0) {
                 mCurTurn = -mCurTurn;
                 currentTurn.setText(getPlayerSign(mCurTurn));
             }
             else if(mGame.checkResult() == 1) {
                 mIsEnded = true;
+                if(mIsFirstHuman){
+                    mIsFirstHuman = false;
+                }
+                    else
+                {
+                    mIsFirstHuman = true;
+                }
+                moveCnt =0;
                 String winMsg =  mContext.getResources().getString(R.string.win_message) +" "+ getPlayerSign(mCurTurn);
                 currentTurn.setText(winMsg);
             }
             else if(mGame.checkResult() == -1) {
                 mIsEnded = true;
+                if(mIsFirstHuman){
+                    mIsFirstHuman = false;
+                }
+                else
+                {
+                    mIsFirstHuman = true;
+                }
+                moveCnt =0;
                 String winMsg =  mContext.getResources().getString(R.string.draw_message);
                 currentTurn.setText(winMsg);
             }
         }
+
+        if(isAiEnabled&&!mIsEnded)
+        {
+            int pos = mAi.setAiMove(mCurTurn);
+            GridLayout gameField = (GridLayout) curCell.getParent();
+            TextView targetCell = (TextView) gameField.getChildAt(pos);
+            targetCell.setText(getPlayerSign(mCurTurn));
+            //            mCurTurn = -mCurTurn;
+            if (mGame.checkResult() == 0) {
+                mCurTurn = -mCurTurn;
+                currentTurn.setText(getPlayerSign(mCurTurn));
+            }
+            else if(mGame.checkResult() == 1) {
+                mIsEnded = true;
+                if(mIsFirstHuman){
+                    mIsFirstHuman = false;
+                }
+                else
+                {
+                    mIsFirstHuman = true;
+                }
+                String winMsg =  mContext.getResources().getString(R.string.win_message) +" "+ getPlayerSign(mCurTurn);
+                currentTurn.setText(winMsg);
+            }
+            else if(mGame.checkResult() == -1) {
+                mIsEnded = true;
+                if(mIsFirstHuman){
+                    mIsFirstHuman = false;
+                }
+                else
+                {
+                    mIsFirstHuman = true;
+                }
+                String winMsg =  mContext.getResources().getString(R.string.draw_message);
+                currentTurn.setText(winMsg);
+            }
+            moveCnt++;
+
+        }
+        Log.d("TAAAAG", "MOve cnt = " + moveCnt + ", mIsFirstHuman = " + mIsFirstHuman);
+    }
+
+    void setAiMove(TextView currentCell, TextView currentTurn)
+    {
+
+        int pos = mAi.setAiMove(mCurTurn);
+        GridLayout gameField = (GridLayout) currentCell.getParent();
+        TextView targetCell = (TextView) gameField.getChildAt(pos);
+        targetCell.setText(getPlayerSign(mCurTurn));
+        //            mCurTurn = -mCurTurn;
+        if (mGame.checkResult() == 0) {
+            mCurTurn = -mCurTurn;
+            currentTurn.setText(getPlayerSign(mCurTurn));
+        }
+        else if(mGame.checkResult() == 1) {
+            mIsEnded = true;
+            String winMsg =  mContext.getResources().getString(R.string.win_message) +" "+ getPlayerSign(mCurTurn);
+            currentTurn.setText(winMsg);
+        }
+        else if(mGame.checkResult() == -1) {
+            mIsEnded = true;
+            String winMsg =  mContext.getResources().getString(R.string.draw_message);
+            currentTurn.setText(winMsg);
+        }
+        moveCnt++;
     }
 
     boolean isEnded()
@@ -182,5 +276,10 @@ public class TTTController {
             curGameField[i] = (byte) mGame.getGameField()[i-1];
         }
         return curGameField;
+    }
+
+    TicTacToe getGameForAi()
+    {
+        return mGame;
     }
 }

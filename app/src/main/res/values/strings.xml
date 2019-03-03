@@ -6,6 +6,7 @@
     <string name="label_currentMove">Текущий ход: </string>
     <string name="win_message">Победа игрока </string>
     <string name="draw_message">Ничья!</string>
+    <string name="aiCheckLabel">Игра с ИИ</string>
 
     <!--Tag layout -->
     <string name="label_movesCnt">Сделано ходов :</string>
