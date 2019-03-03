@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.GridLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class TTTController {
 
@@ -176,11 +177,13 @@ public class TTTController {
                 mIsEnded = true;
                 String winMsg =  mContext.getResources().getString(R.string.win_message) +" "+ getPlayerSign(mCurTurn);
                 currentTurn.setText(winMsg);
+                Toast.makeText(mContext,winMsg, Toast.LENGTH_SHORT).show();
             }
             else if(mGame.checkResult() == -1) {
                 mIsEnded = true;
                 String winMsg =  mContext.getResources().getString(R.string.draw_message);
                 currentTurn.setText(winMsg);
+                Toast.makeText(mContext,winMsg, Toast.LENGTH_SHORT).show();
             }
 
             if(isAiEnabled&&!mIsEnded)

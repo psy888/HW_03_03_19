@@ -22,34 +22,84 @@ public class Tag
      */
     private void fillGameField()
     {
-        int value = 0;
+        int value = 1;
         //Rows
         for (int i = 0; i < mSize; i++) {
             //Columns
             for (int j = 0; j < mSize; j++) {
-                mGameField[i][j] = value;
-                value++;
+                if(i==mSize-1&&j==mSize-1)
+                {
+                    mGameField[i][j] = 0;
+                }
+                else {
+                    mGameField[i][j] = value;
+                    value++;
+                }
             }
 
         }
     }
 
 
+    int randomWithRange(int min, int max)
+    {
+        int range = (max - min) + 1;
+        return (int)(Math.random() * range) + min;
+    }
     /**
      * Перемешать значения на игровом поле
      */
     private void shuffleGameField()
     {
+        int cnt = randomWithRange(50,100);
+        int[] zeroP = new int[]{mSize-1,mSize-1};
+        for (int i = 0; i < cnt; i++) {
+            int random1 = randomWithRange(0,1);
+            int random2 =randomWithRange(0,1);
+            int sign = randomWithRange(0,3);
+            try {
+                switch (sign){
+                    case 0:
+                        swapCells(zeroP[0],zeroP[1],zeroP[0]+random1,zeroP[1]+random2);
+                        zeroP[0]+=random1;
+                        zeroP[1]+=random2;
+                        break;
+                    case 1:
+                        swapCells(zeroP[0],zeroP[1],zeroP[0]-random1,zeroP[1]+random2);
+                        zeroP[0]-=random1;
+                        zeroP[1]+=random2;
+                        break;
+                    case 2:
+                        swapCells(zeroP[0],zeroP[1],zeroP[0]+random1,zeroP[1]-random2);
+                        zeroP[0]+=random1;
+                        zeroP[1]-=random2;
+                        break;
+                    case 3:
+                        swapCells(zeroP[0],zeroP[1],zeroP[0]-random1,zeroP[1]-random2);
+                        zeroP[0]-=random1;
+                        zeroP[1]-=random2;
+                        break;
+
+                }
+                Log.d("Tag class", "random1 = " + random1 + ", random2 = " + random2);
+
+            }catch (IndexOutOfBoundsException e) {/*Ignore*/}
+        }
+        /*
         //rows
         for (int i = 0; i < mSize; i++) {
             //columns
             for (int j = 0; j < mSize; j++) {
+
+
                 int random1 = (int) (Math.random() * mSize);
                 int random2 =(int) (Math.random() * mSize);
                 swapCells(i,j,random1,random2);
                 Log.d("Tag class", "random1 = " + random1 + ", random2 = " + random2);
+
             }
         }
+        */
     }
     /**
      * Обмен значениями в ячейках игрового поля
@@ -58,7 +108,7 @@ public class Tag
      * @param r2 - ряд второго значения
      * @param c2 - колнка второго значения
      */
-    void swapCells (int r1, int c1, int r2, int c2)
+    void swapCells (int r1, int c1, int r2, int c2) throws IndexOutOfBoundsException
     {
         int tmp = mGameField[r1][c1];
         mGameField[r1][c1] = mGameField[r2][c2];

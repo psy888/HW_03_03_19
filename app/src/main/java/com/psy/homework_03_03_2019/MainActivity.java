@@ -247,7 +247,7 @@ public class MainActivity extends AppCompatActivity {
             else
             {
                 mTagController.newGame();
-//                //todo:RestartGame
+//
             }
         }
     }
