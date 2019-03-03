@@ -111,6 +111,17 @@ public class TTTController {
         mIsEnded = false;
         //Update UI current turn
         currentTurn.setText(getPlayerSign(mCurTurn));
+        if(mIsFirstHuman){
+            mIsFirstHuman = false;
+        }
+        else
+        {
+            mIsFirstHuman = true;
+        }
+        if(!mIsFirstHuman)
+        {
+            setAiMove((TextView) gameField.getChildAt(0),currentTurn);
+        }
     }
 
     /**
@@ -150,13 +161,10 @@ public class TTTController {
             Log.e(TAG, e.getMessage());
         }
 
-        if(moveCnt == 0&&!mIsFirstHuman)
-        {
 
-        }
 
         boolean isSuccess = mGame.setMove(cellId, mCurTurn);
-        moveCnt++;
+
         if(isSuccess&&curCell!=null)
         {
             curCell.setText(getPlayerSign(mCurTurn)); // Update UI of clicked cell
@@ -166,70 +174,23 @@ public class TTTController {
             }
             else if(mGame.checkResult() == 1) {
                 mIsEnded = true;
-                if(mIsFirstHuman){
-                    mIsFirstHuman = false;
-                }
-                    else
-                {
-                    mIsFirstHuman = true;
-                }
-                moveCnt =0;
                 String winMsg =  mContext.getResources().getString(R.string.win_message) +" "+ getPlayerSign(mCurTurn);
                 currentTurn.setText(winMsg);
             }
             else if(mGame.checkResult() == -1) {
                 mIsEnded = true;
-                if(mIsFirstHuman){
-                    mIsFirstHuman = false;
-                }
-                else
-                {
-                    mIsFirstHuman = true;
-                }
-                moveCnt =0;
                 String winMsg =  mContext.getResources().getString(R.string.draw_message);
                 currentTurn.setText(winMsg);
             }
+
+            if(isAiEnabled&&!mIsEnded)
+            {
+                setAiMove(curCell, currentTurn);
+
+            }
         }
 
-        if(isAiEnabled&&!mIsEnded)
-        {
-            int pos = mAi.setAiMove(mCurTurn);
-            GridLayout gameField = (GridLayout) curCell.getParent();
-            TextView targetCell = (TextView) gameField.getChildAt(pos);
-            targetCell.setText(getPlayerSign(mCurTurn));
-            //            mCurTurn = -mCurTurn;
-            if (mGame.checkResult() == 0) {
-                mCurTurn = -mCurTurn;
-                currentTurn.setText(getPlayerSign(mCurTurn));
-            }
-            else if(mGame.checkResult() == 1) {
-                mIsEnded = true;
-                if(mIsFirstHuman){
-                    mIsFirstHuman = false;
-                }
-                else
-                {
-                    mIsFirstHuman = true;
-                }
-                String winMsg =  mContext.getResources().getString(R.string.win_message) +" "+ getPlayerSign(mCurTurn);
-                currentTurn.setText(winMsg);
-            }
-            else if(mGame.checkResult() == -1) {
-                mIsEnded = true;
-                if(mIsFirstHuman){
-                    mIsFirstHuman = false;
-                }
-                else
-                {
-                    mIsFirstHuman = true;
-                }
-                String winMsg =  mContext.getResources().getString(R.string.draw_message);
-                currentTurn.setText(winMsg);
-            }
-            moveCnt++;
 
-        }
         Log.d("TAAAAG", "MOve cnt = " + moveCnt + ", mIsFirstHuman = " + mIsFirstHuman);
     }
 
@@ -255,7 +216,7 @@ public class TTTController {
             String winMsg =  mContext.getResources().getString(R.string.draw_message);
             currentTurn.setText(winMsg);
         }
-        moveCnt++;
+
     }
 
     boolean isEnded()

@@ -70,7 +70,8 @@ public class TTTAi
                     cntBestPossibilities++;
                 }
             }
-            int rand = (mPossibilitys.size() - 1) - (int) (Math.random()*cntBestPossibilities);
+            int rand = (cntBestPossibilities>1)?(mPossibilitys.size() - 1) - (int) (Math.random()*cntBestPossibilities):(mPossibilitys.size() - 1);
+//            int rand = (mPossibilitys.size() - 1) - (int) (Math.random()*cntBestPossibilities);
 
             return mPossibilitys.get(rand)[1];
 //            return bestDefence[1];
@@ -85,7 +86,7 @@ public class TTTAi
                     cntBestPossibilities++;
                 }
             }
-            int rand = (int) (Math.random()*cntBestPossibilities);
+            int rand = (cntBestPossibilities>1)?(int) (Math.random()*cntBestPossibilities):0;
 
             return mPossibilitys.get(rand)[1];
 //            return bestPossibility[1];
