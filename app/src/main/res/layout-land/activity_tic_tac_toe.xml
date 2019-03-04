@@ -36,6 +36,14 @@
             android:layout_gravity="center_horizontal"
             tools:text="X"
             android:textSize="@dimen/secondaryTextSize"/>
+
+        <CheckBox
+            android:id="@+id/aiEnabled"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center_horizontal"
+            android:layout_margin="@dimen/smallMargin"
+            android:text="@string/aiCheckLabel" />
     </LinearLayout>
     <FrameLayout
         android:layout_width="match_parent"

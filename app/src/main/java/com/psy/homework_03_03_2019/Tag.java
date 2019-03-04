@@ -41,6 +41,12 @@ public class Tag
     }
 
 
+    /**
+     * получить случайное число от min до max включительно!
+     * @param min - минимальное значение
+     * @param max - максимальное значение
+     * @return - случайное число
+     */
     int randomWithRange(int min, int max)
     {
         int range = (max - min) + 1;
@@ -54,36 +60,36 @@ public class Tag
         int cnt = randomWithRange(50,100);
         int[] zeroP = new int[]{mSize-1,mSize-1};
         for (int i = 0; i < cnt; i++) {
-            int random1 = randomWithRange(0,1);
-            int random2 =randomWithRange(0,1);
             int sign = randomWithRange(0,3);
-            try {
-                switch (sign){
-                    case 0:
-                        swapCells(zeroP[0],zeroP[1],zeroP[0]+random1,zeroP[1]+random2);
-                        zeroP[0]+=random1;
-                        zeroP[1]+=random2;
-                        break;
-                    case 1:
-                        swapCells(zeroP[0],zeroP[1],zeroP[0]-random1,zeroP[1]+random2);
-                        zeroP[0]-=random1;
-                        zeroP[1]+=random2;
-                        break;
-                    case 2:
-                        swapCells(zeroP[0],zeroP[1],zeroP[0]+random1,zeroP[1]-random2);
-                        zeroP[0]+=random1;
-                        zeroP[1]-=random2;
-                        break;
-                    case 3:
-                        swapCells(zeroP[0],zeroP[1],zeroP[0]-random1,zeroP[1]-random2);
-                        zeroP[0]-=random1;
-                        zeroP[1]-=random2;
-                        break;
+            if(mGameField[zeroP[0]][zeroP[1]] == 0) {
+                Log.d("Tag class", "CNT = " + i);
+                try {
+                    switch (sign) {
+                        case 0:
+                            swapCells(zeroP[0], zeroP[1], zeroP[0] + 1, zeroP[1]); // up
+                            zeroP[0]++;
+                            Log.d("Tag class", "Shuffle  =  UP");
+                            break;
+                        case 1:
+                            swapCells(zeroP[0], zeroP[1], zeroP[0] - 1, zeroP[1]); // down
+                            zeroP[0]--;
+                            Log.d("Tag class", "Shuffle  =  DOWN");
+                            break;
+                        case 2:
+                            swapCells(zeroP[0], zeroP[1], zeroP[0], zeroP[1] -1); //left
+                            zeroP[1]--;
+                            Log.d("Tag class", "Shuffle  =  LEFT");
+                            break;
+                        case 3:
+                            swapCells(zeroP[0], zeroP[1], zeroP[0], zeroP[1] +1); // right
+                            zeroP[1]++;
+                            Log.d("Tag class", "Shuffle  =  RIGHT");
+                            break;
 
-                }
-                Log.d("Tag class", "random1 = " + random1 + ", random2 = " + random2);
+                    }
 
-            }catch (IndexOutOfBoundsException e) {/*Ignore*/}
+                } catch (IndexOutOfBoundsException e) {/*Ignore*/}
+            }
         }
         /*
         //rows
@@ -236,7 +242,5 @@ public class Tag
         return mGameField;
     }
 
-    public void setGameField(int[][] gameField) {
-        mGameField = gameField;
-    }
+
 }

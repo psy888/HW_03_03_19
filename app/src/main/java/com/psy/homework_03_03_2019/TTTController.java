@@ -44,6 +44,7 @@ public class TTTController {
         mCurTurn = savedGame[0];
         mSize = (int)Math.sqrt((double) savedGame.length-1);
         mGame = new TicTacToe(savedGame);
+        mAi = new TTTAi(mGame);
     }
 
     /**

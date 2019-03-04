@@ -1,6 +1,5 @@
 package com.psy.homework_03_03_2019;
 
-import android.app.Activity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,8 +12,6 @@ import android.widget.CheckBox;
 import android.widget.GridLayout;
 import android.widget.TextView;
 
-import java.util.Objects;
-
 public class MainActivity extends AppCompatActivity {
     private int mCurrentGameResId = 0;
 
@@ -25,7 +22,8 @@ public class MainActivity extends AppCompatActivity {
     GridLayout TTTGameField;
     TicTacToeClick mTicTacToeClick;
     int mTTTSize = 3;
-    CheckBox isAiEnabled;
+    CheckBox mCbIsAiEnabled;
+    boolean isAiEnabled = false;
     //Tag
     TagController mTagController;
     TextView tvMovesCnt;
@@ -47,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         if(savedInstanceState!=null)
         {
             mTTTSize = savedInstanceState.getInt("TTTSize", 3);
-
+            isAiEnabled = savedInstanceState.getBoolean("isAiEnabled",true);
             mTagSize = savedInstanceState.getInt("TagSize", 3);
             mCurrentGameResId = savedInstanceState.getInt("CurrentGameResId");
 
@@ -84,7 +82,8 @@ public class MainActivity extends AppCompatActivity {
             }
             TTTGameField = findViewById(R.id.TTTgameField);
             tvCurrentTurn = findViewById(R.id.currentTurn);
-            isAiEnabled = findViewById(R.id.aiEnabled);
+            mCbIsAiEnabled = findViewById(R.id.aiEnabled);
+            mCbIsAiEnabled.setChecked(isAiEnabled);
 
             mTicTacToeClick = new TicTacToeClick();
 
@@ -124,6 +123,7 @@ public class MainActivity extends AppCompatActivity {
         outState.putInt("CurrentGameResId", mCurrentGameResId);
         outState.putInt("TagSize", mTagSize);
         outState.putInt("TTTSize", mTTTSize);
+        outState.putBoolean("isAiEnabled",isAiEnabled);
 
         if(mTTTController != null) {
             outState.putByteArray("TTTSavedGame", mTTTController.saveGame());
@@ -222,7 +222,7 @@ public class MainActivity extends AppCompatActivity {
             if(!mTTTController.isEnded())
             {
                 int cellId = (v.getId()) - 10000;
-                mTTTController.setMove(cellId, v, tvCurrentTurn,isAiEnabled.isChecked());
+                mTTTController.setMove(cellId, v, tvCurrentTurn, mCbIsAiEnabled.isChecked());
 
 
             }
