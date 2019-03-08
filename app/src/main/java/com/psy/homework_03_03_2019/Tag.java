@@ -57,7 +57,7 @@ public class Tag
      */
     private void shuffleGameField()
     {
-        int cnt = randomWithRange(50,100);
+        int cnt = randomWithRange(50,150);
         int[] zeroP = new int[]{mSize-1,mSize-1};
         for (int i = 0; i < cnt; i++) {
             int sign = randomWithRange(0,3);
