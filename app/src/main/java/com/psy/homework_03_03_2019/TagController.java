@@ -18,11 +18,11 @@ public class TagController {
     private LayoutInflater mInflater;
     private GridLayout mGameField;
     private TextView mTvMovesCnt;
-    private MainActivity.TagClick mClicklistener;
+    private TagFragment.TagClick mClicklistener;
 
-    public TagController(Context context, LayoutInflater inflater,int size, TextView tvMovesCnt, GridLayout TagGameField,MainActivity.TagClick clicklistener)
+    public TagController(TagFragment context, LayoutInflater inflater,int size, TextView tvMovesCnt, GridLayout TagGameField,TagFragment.TagClick clicklistener)
     {
-        mContext = context;
+        mContext = context.getContext();
         mInflater = inflater;
         mClicklistener = clicklistener;
         mSize = size;
@@ -285,9 +285,9 @@ public class TagController {
         }
     }
 
-    void setContext(Context context)
+    void setContext(TagFragment context)
     {
-        mContext = context;
+        mContext = context.getContext();
     }
     void setInflater(LayoutInflater inflater)
     {
@@ -301,7 +301,7 @@ public class TagController {
     {
         mTvMovesCnt = movesCnt;
     }
-    void setClickListener (MainActivity.TagClick clicklistener)
+    void setClickListener (TagFragment.TagClick clicklistener)
     {
         mClicklistener = clicklistener;
     }

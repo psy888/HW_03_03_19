@@ -24,11 +24,12 @@ public class TTTController {
 
     /**
      * Конструктор
+     * @param context
      * @param size - размер игрового поля
      */
-    public TTTController(Context context, int size, int turn)
+    public TTTController(TTTFragment context, int size, int turn)
     {
-        mContext = context;
+        mContext = context.getContext();
         mCurTurn = turn;
         mSize = size;
         mGame = new TicTacToe(mSize);
@@ -53,7 +54,7 @@ public class TTTController {
      * @param gameField - Родительский элемент игрового поля
      * @param clickListener - setOnClickListener на каждый элемент игрового поля
      */
-    public void createGameField(LayoutInflater inflater,GridLayout gameField, MainActivity.TicTacToeClick clickListener)
+    public void createGameField(LayoutInflater inflater,GridLayout gameField, TTTFragment.TicTacToeClick clickListener)
     {
         mGameField = gameField;
         gameField.setRowCount(mSize);

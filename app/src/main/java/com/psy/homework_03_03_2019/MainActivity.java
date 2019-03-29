@@ -1,5 +1,8 @@
 package com.psy.homework_03_03_2019;
 
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,10 +20,11 @@ public class MainActivity extends AppCompatActivity {
 
 
     //TicTacToe
+
     TTTController mTTTController;
     TextView tvCurrentTurn;
     GridLayout TTTGameField;
-    TicTacToeClick mTicTacToeClick;
+//    TicTacToeClick mTicTacToeClick;
     int mTTTSize = 3;
     CheckBox mCbIsAiEnabled;
     boolean isAiEnabled = false;
@@ -28,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
     TagController mTagController;
     TextView tvMovesCnt;
     GridLayout TagGameField;
-    TagClick mTagClick;
+//    TagClick mTagClick;
     int mTagSize = 3;
 
     MenuItem tttResumeGame;
@@ -42,8 +46,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
+
         if(savedInstanceState!=null)
         {
+
             mTTTSize = savedInstanceState.getInt("TTTSize", 3);
             isAiEnabled = savedInstanceState.getBoolean("isAiEnabled",true);
             mTagSize = savedInstanceState.getInt("TagSize", 3);
@@ -64,13 +71,18 @@ public class MainActivity extends AppCompatActivity {
         }
         else
         {
-            mCurrentGameResId = R.layout.activity_tic_tac_toe;
+//            mCurrentGameResId = R.layout.activity_tic_tac_toe;
+            mCurrentGameResId = R.layout.activity_main;
+
         }
 
         setContentView(mCurrentGameResId);
 
         inflater = getLayoutInflater();
 
+
+
+        /*
         if(mCurrentGameResId == R.layout.activity_tic_tac_toe)
         {
 //            invalidateOptionsMenu();
@@ -89,10 +101,12 @@ public class MainActivity extends AppCompatActivity {
 
             mTTTController.createGameField(inflater, TTTGameField, mTicTacToeClick);
         }
+*/
+/*
 
         if (mCurrentGameResId == R.layout.activity_tag)
         {
-            invalidateOptionsMenu();
+//            invalidateOptionsMenu();
             TagGameField = findViewById(R.id.TagGameField);
             tvMovesCnt = findViewById(R.id.movesCnt);
             mTagClick = new TagClick();
@@ -109,12 +123,36 @@ public class MainActivity extends AppCompatActivity {
             }
             mTagController.createGameField();
         }
+        */
 
 
 
 
 
 
+    }
+
+    void getTTTFragment()
+    {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+
+        Fragment fragmentTTT = new TTTFragment();
+        fragmentTransaction.add(R.id.mainLayout,fragmentTTT, "TicTakToe");
+        fragmentTransaction.addToBackStack("TicTakToe");
+        fragmentTransaction.commit();
+    }
+
+    void getTAGFragment()
+    {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+        Fragment fragmentTag = new TagFragment();
+        fragmentTransaction.add(R.id.mainLayout,fragmentTag, "TAG");
+        fragmentTransaction.addToBackStack("Tag");
+        fragmentTransaction.commit();
     }
 
     @Override
@@ -215,6 +253,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Слушатель для "Крестики-нолики"
      */
+    /*
     protected class TicTacToeClick implements View.OnClickListener
     {
         @Override
@@ -231,10 +270,12 @@ public class MainActivity extends AppCompatActivity {
                 mTTTController.restartGame(TTTGameField, tvCurrentTurn);
             }
         }
-    }
+    }*/
+
     /**
      * Слушатель для "Пятнашки"
      */
+    /*
     protected class TagClick implements View.OnClickListener
     {
         @Override
@@ -251,4 +292,5 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+    */
  }
