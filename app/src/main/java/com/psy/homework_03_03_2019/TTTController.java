@@ -8,7 +8,9 @@ import android.widget.GridLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class TTTController {
+import java.io.Serializable;
+
+public class TTTController implements Serializable {
 
     private static final String TAG = "TTTController";
     private Context mContext;

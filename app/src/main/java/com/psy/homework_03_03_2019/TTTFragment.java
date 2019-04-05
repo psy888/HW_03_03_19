@@ -10,7 +10,9 @@ import android.widget.CheckBox;
 import android.widget.GridLayout;
 import android.widget.TextView;
 
-public class TTTFragment extends Fragment {
+import java.io.Serializable;
+
+public class TTTFragment extends Fragment implements Serializable {
     //TicTacToe
     TTTController mTTTController;
     TextView tvCurrentTurn;
@@ -21,6 +23,12 @@ public class TTTFragment extends Fragment {
     boolean isAiEnabled = false;
     boolean isInited = false;
 
+    public TTTFragment(){
+        if(getArguments()!=null)
+        {
+
+        }
+    }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if(!isInited) {

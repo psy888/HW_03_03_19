@@ -1,6 +1,9 @@
 package com.psy.homework_03_03_2019;
+
+import java.io.Serializable;
+
 //Крестики - нолики
-public class TicTacToe
+public class TicTacToe implements Serializable
 {
     private int[] mGameField; // Игровое поле
     private int mSize; //размер игрового поля mSize x mSize

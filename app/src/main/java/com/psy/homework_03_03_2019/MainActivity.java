@@ -22,12 +22,6 @@ public class MainActivity extends AppCompatActivity {
     TagFragment mTagFragment = new TagFragment();
 
 
-    MenuItem tttResumeGame;
-    MenuItem tagResumeGame;
-
-
-//    LayoutInflater inflater;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,16 +33,21 @@ public class MainActivity extends AppCompatActivity {
         if(savedInstanceState!=null)
         {
             mCurrentGameResId = savedInstanceState.getInt("CurrentGameResId");
+            mTTTFragment = (TTTFragment) savedInstanceState.getSerializable("tttFragment");
+            mTagFragment = (TagFragment) savedInstanceState.getSerializable("tagFragment");
+            /*
+            if(getSupportFragmentManager().getFragment(savedInstanceState, "tttFragment")!=null)
+                mTTTFragment = (TTTFragment) getSupportFragmentManager().getFragment(savedInstanceState, "tttFragment");
+            if(getSupportFragmentManager().getFragment(savedInstanceState, "tagFragment") !=null)
+                mTagFragment = (TagFragment) getSupportFragmentManager().getFragment(savedInstanceState, "tagFragment");
+            mTTTFragment.setArguments(savedInstanceState.getBundle("tttSaved"));
+            */
         }
         else
         {
             mCurrentGameResId = R.layout.activity_tic_tac_toe;
-//            mCurrentGameResId = R.layout.activity_tag;
             addFragment(mCurrentGameResId);
         }
-
-//        inflater = getLayoutInflater();
-
 
     }
 
@@ -75,18 +74,7 @@ public class MainActivity extends AppCompatActivity {
         }
         mFragmentTransaction = mFragmentManager.beginTransaction();
         mFragmentTransaction.add(R.id.mainLayout, mCurGameFragment, "game").commit();
-/*
-        if(mFragmentManager.getFragments().size()==0)
-        {
-            mFragmentTransaction.add(R.id.mainLayout, mCurGameFragment, "game");
-        }
-        else
-        {
-            mFragmentTransaction.replace(R.id.mainLayout, mCurGameFragment,"game");
-        }
 
-        mFragmentTransaction.commit();*/
-//        mFragmentTransaction.addToBackStack(null);
     }
 
 
@@ -94,6 +82,19 @@ public class MainActivity extends AppCompatActivity {
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt("CurrentGameResId", mCurrentGameResId);
+        outState.putSerializable("tttFragment", mTTTFragment);
+        outState.putSerializable("tagFragment", mTagFragment);
+
+        /*
+        if(mTTTFragment.isAdded())
+            getSupportFragmentManager().putFragment(outState, "tttFragment", mTTTFragment);
+
+
+        if(mTagFragment.isAdded())
+            getSupportFragmentManager().putFragment(outState,"tagFragment", mTagFragment);
+
+        outState.putBundle("tttSaved",mTTTFragment.getArguments());
+*/
     }
 
     @Override
@@ -183,47 +184,4 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    /**
-     * Слушатель для "Крестики-нолики"
-     */
-    /*
-    protected class TicTacToeClick implements View.OnClickListener
-    {
-        @Override
-        public void onClick(View v) {
-            if(!mTTTController.isEnded())
-            {
-                int cellId = (v.getId()) - 10000;
-                mTTTController.setMove(cellId, v, tvCurrentTurn, mCbIsAiEnabled.isChecked());
-
-
-            }
-            else
-            {
-                mTTTController.restartGame(TTTGameField, tvCurrentTurn);
-            }
-        }
-    }*/
-
-    /**
-     * Слушатель для "Пятнашки"
-     */
-    /*
-    protected class TagClick implements View.OnClickListener
-    {
-        @Override
-        public void onClick(View v) {
-            if(!mTagController.isEnded())
-            {
-                int cellId = v.getId();
-                mTagController.setMove(cellId);
-            }
-            else
-            {
-                mTagController.newGame();
-//
-            }
-        }
-    }
-    */
  }

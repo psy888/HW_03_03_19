@@ -4,10 +4,12 @@ import android.annotation.TargetApi;
 import android.os.Build;
 import android.util.Log;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Comparator;
 
-public class TTTAi
+
+public class TTTAi implements Serializable
 {
     TicTacToe mGame;
     int aiSign;

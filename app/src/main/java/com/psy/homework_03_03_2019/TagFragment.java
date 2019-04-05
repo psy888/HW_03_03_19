@@ -10,7 +10,9 @@ import android.view.ViewGroup;
 import android.widget.GridLayout;
 import android.widget.TextView;
 
-public class TagFragment extends Fragment {
+import java.io.Serializable;
+
+public class TagFragment extends Fragment implements Serializable {
 
     //Tag
     TagController mTagController;

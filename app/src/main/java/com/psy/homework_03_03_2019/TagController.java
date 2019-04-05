@@ -8,7 +8,9 @@ import android.view.View;
 import android.widget.GridLayout;
 import android.widget.TextView;
 
-public class TagController {
+import java.io.Serializable;
+
+public class TagController implements Serializable {
 
     private Context mContext;
     private Tag mGame;

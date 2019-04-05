@@ -2,9 +2,11 @@ package com.psy.homework_03_03_2019;
 
 import android.util.Log;
 
+import java.io.Serializable;
+
 
 //Пятнашки
-public class Tag
+public class Tag implements Serializable
 {
     private int mSize; // размер грани игрового поля
     private int[][] mGameField; //игровое поле
