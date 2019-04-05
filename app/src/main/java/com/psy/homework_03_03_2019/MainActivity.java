@@ -1,188 +1,110 @@
 package com.psy.homework_03_03_2019;
 
+import android.content.pm.ActivityInfo;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.CheckBox;
-import android.widget.GridLayout;
-import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
     private int mCurrentGameResId = 0;
+    private Fragment mCurGameFragment;
 
+    FragmentManager mFragmentManager = getSupportFragmentManager();
+    FragmentTransaction mFragmentTransaction = mFragmentManager.beginTransaction();
 
-    //TicTacToe
+    TTTFragment mTTTFragment = new TTTFragment();
+    TagFragment mTagFragment = new TagFragment();
 
-    TTTController mTTTController;
-    TextView tvCurrentTurn;
-    GridLayout TTTGameField;
-//    TicTacToeClick mTicTacToeClick;
-    int mTTTSize = 3;
-    CheckBox mCbIsAiEnabled;
-    boolean isAiEnabled = false;
-    //Tag
-    TagController mTagController;
-    TextView tvMovesCnt;
-    GridLayout TagGameField;
-//    TagClick mTagClick;
-    int mTagSize = 3;
 
     MenuItem tttResumeGame;
     MenuItem tagResumeGame;
 
 
-    LayoutInflater inflater;
+//    LayoutInflater inflater;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
 
 
         if(savedInstanceState!=null)
         {
-
-            mTTTSize = savedInstanceState.getInt("TTTSize", 3);
-            isAiEnabled = savedInstanceState.getBoolean("isAiEnabled",true);
-            mTagSize = savedInstanceState.getInt("TagSize", 3);
             mCurrentGameResId = savedInstanceState.getInt("CurrentGameResId");
-
-            if(savedInstanceState.getByteArray("TTTSavedGame")!=null)
-                mTTTController = new TTTController(this, savedInstanceState.getByteArray("TTTSavedGame"));
-            if(savedInstanceState.getByteArray("TagSavedGameRow0") != null)
-            {
-                int moveCountRestore = savedInstanceState.getInt("TagMoveCount");
-
-                mTagController = new TagController(mTagSize);
-                for (int i = 0; i < mTagSize; i++) {
-                    mTagController.restoreGameFieldRow(i, savedInstanceState.getByteArray("TagSavedGameRow"+i));
-                }
-                mTagController.setMoveCount(moveCountRestore);
-            }
         }
         else
         {
-//            mCurrentGameResId = R.layout.activity_tic_tac_toe;
-            mCurrentGameResId = R.layout.activity_main;
-
+            mCurrentGameResId = R.layout.activity_tic_tac_toe;
+//            mCurrentGameResId = R.layout.activity_tag;
+            addFragment(mCurrentGameResId);
         }
 
-        setContentView(mCurrentGameResId);
-
-        inflater = getLayoutInflater();
+//        inflater = getLayoutInflater();
 
 
+    }
 
-        /*
-        if(mCurrentGameResId == R.layout.activity_tic_tac_toe)
+
+
+    void addFragment(int gameId)
+    {
+
+        mFragmentManager = getSupportFragmentManager();
+//        mFragmentTransaction = mFragmentManager.beginTransaction();
+        if(mFragmentManager.getFragments().size()>0) {
+            mFragmentTransaction = mFragmentManager.beginTransaction();
+            mFragmentTransaction.remove(mFragmentManager.findFragmentByTag("game"));
+            mFragmentTransaction.commit();
+        }
+        switch (gameId)
         {
-//            invalidateOptionsMenu();
-//            Log.d("TAG", "mTTTSize = " + mTTTSize );
-            if(mTTTController == null) {
-//                mTTTSize = 3;
-                mTTTController = new TTTController(this, mTTTSize, TicTacToe.PLAYER_X);
-                Log.d("TAG", "mTTTSize = " + mTTTSize );
-            }
-            TTTGameField = findViewById(R.id.TTTgameField);
-            tvCurrentTurn = findViewById(R.id.currentTurn);
-            mCbIsAiEnabled = findViewById(R.id.aiEnabled);
-            mCbIsAiEnabled.setChecked(isAiEnabled);
-
-            mTicTacToeClick = new TicTacToeClick();
-
-            mTTTController.createGameField(inflater, TTTGameField, mTicTacToeClick);
+            case R.layout.activity_tic_tac_toe:
+                mCurGameFragment = mTTTFragment;
+                break;
+            case R.layout.activity_tag:
+                mCurGameFragment = mTagFragment;
+                break;
         }
-*/
+        mFragmentTransaction = mFragmentManager.beginTransaction();
+        mFragmentTransaction.add(R.id.mainLayout, mCurGameFragment, "game").commit();
 /*
-
-        if (mCurrentGameResId == R.layout.activity_tag)
+        if(mFragmentManager.getFragments().size()==0)
         {
-//            invalidateOptionsMenu();
-            TagGameField = findViewById(R.id.TagGameField);
-            tvMovesCnt = findViewById(R.id.movesCnt);
-            mTagClick = new TagClick();
-            if(mTagController == null)
-            {
-                mTagController = new TagController(this, inflater,mTagSize, tvMovesCnt, TagGameField,mTagClick);
-            }
-            else {
-                mTagController.setContext(this);
-                mTagController.setInflater(inflater);
-                mTagController.setUIGameField(TagGameField);
-                mTagController.setUIMovesCnt(tvMovesCnt);
-                mTagController.setClickListener(mTagClick);
-            }
-            mTagController.createGameField();
+            mFragmentTransaction.add(R.id.mainLayout, mCurGameFragment, "game");
         }
-        */
+        else
+        {
+            mFragmentTransaction.replace(R.id.mainLayout, mCurGameFragment,"game");
+        }
 
-
-
-
-
-
+        mFragmentTransaction.commit();*/
+//        mFragmentTransaction.addToBackStack(null);
     }
 
-    void getTTTFragment()
-    {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
-
-        Fragment fragmentTTT = new TTTFragment();
-        fragmentTransaction.add(R.id.mainLayout,fragmentTTT, "TicTakToe");
-        fragmentTransaction.addToBackStack("TicTakToe");
-        fragmentTransaction.commit();
-    }
-
-    void getTAGFragment()
-    {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
-        Fragment fragmentTag = new TagFragment();
-        fragmentTransaction.add(R.id.mainLayout,fragmentTag, "TAG");
-        fragmentTransaction.addToBackStack("Tag");
-        fragmentTransaction.commit();
-    }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt("CurrentGameResId", mCurrentGameResId);
-        outState.putInt("TagSize", mTagSize);
-        outState.putInt("TTTSize", mTTTSize);
-        outState.putBoolean("isAiEnabled",isAiEnabled);
-
-        if(mTTTController != null) {
-            outState.putByteArray("TTTSavedGame", mTTTController.saveGame());
-        }
-        if(mTagController != null)
-        {
-            outState.putInt("TagMoveCount", mTagController.getMoveCount());
-            for (int i = 0; i < mTagSize; i++) {
-                outState.putByteArray("TagSavedGameRow" + i, mTagController.saveGameRow(i));
-            }
-        }
-
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.main_menu,menu);
+        /*
         tttResumeGame = menu.findItem(R.id.TTTresumeGame);
         tagResumeGame = menu.findItem(R.id.TagResumeGame);
-        if(mCurrentGameResId == R.layout.activity_tic_tac_toe)
+//        if(mCurrentGameResId == R.layout.activity_tic_tac_toe)
+        if(mCurGameFragment.equals(mTTTFragment))
         {
             tttResumeGame.setVisible(false);
             tagResumeGame.setVisible(true);
@@ -191,10 +113,23 @@ public class MainActivity extends AppCompatActivity {
         {
             tttResumeGame.setVisible(true);
             tagResumeGame.setVisible(false);
-        }
+        }*/
         return super.onCreateOptionsMenu(menu);
     }
 
+    void startNewGameTTT(int size)
+    {
+        mCurrentGameResId = R.layout.activity_tic_tac_toe;
+        mTTTFragment = new TTTFragment();
+        mTTTFragment.mTTTController = null;
+        mTTTFragment.mTTTSize = size;
+    }
+    void startNewGameTag(int size)
+    {
+        mCurrentGameResId = R.layout.activity_tag;
+        mTagFragment.mTagController = null;
+        mTagFragment.mTagSize = size;
+    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
@@ -202,47 +137,45 @@ public class MainActivity extends AppCompatActivity {
         {
             case R.id.TTTresumeGame:
                 mCurrentGameResId = R.layout.activity_tic_tac_toe;
-                recreate();
+                addFragment(mCurrentGameResId);
                 break;
             case R.id.TTTnewGame3x3:
-                mCurrentGameResId = R.layout.activity_tic_tac_toe;
-                mTTTController = null;
-                mTTTSize = 3;
-                recreate();
+                startNewGameTTT(3);
+                addFragment(mCurrentGameResId);
                 break;
             case R.id.TTTnewGame4x4:
-                mCurrentGameResId = R.layout.activity_tic_tac_toe;
-                mTTTController = null;
-                recreate();
-                this.mTTTSize = 4;
+                startNewGameTTT(4);
+                addFragment(mCurrentGameResId);
                 break;
             case R.id.TTTnewGame5x5:
-                mCurrentGameResId = R.layout.activity_tic_tac_toe;
-                mTTTController = null;
-                mTTTSize = 5;
-                recreate();
+                startNewGameTTT(5);
+                addFragment(mCurrentGameResId);
                 break;
             case R.id.TagResumeGame:
                 mCurrentGameResId = R.layout.activity_tag;
-                recreate();
+                addFragment(mCurrentGameResId);
                 break;
             case R.id.TagNewGame3x3:
-                mCurrentGameResId = R.layout.activity_tag;
-                mTagController = null;
-                mTagSize = 3;
-                recreate();
+                startNewGameTag(3);
+                addFragment(mCurrentGameResId);
                 break;
             case R.id.TagNewGame4x4:
-                mCurrentGameResId = R.layout.activity_tag;
-                mTagController = null;
-                mTagSize = 4;
-                recreate();
+                startNewGameTag(4);
+                addFragment(mCurrentGameResId);
                 break;
             case R.id.TagNewGame5x5:
-                mCurrentGameResId = R.layout.activity_tag;
-                mTagController = null;
-                mTagSize = 5;
-                recreate();
+                startNewGameTag(5);
+                addFragment(mCurrentGameResId);
+                break;
+            case R.id.rotateScreen:
+                if(getRequestedOrientation() == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT||getRequestedOrientation() == ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
+                {
+                    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+                }
+                else
+                {
+                    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+                }
                 break;
 
         }

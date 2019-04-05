@@ -64,4 +64,10 @@
                 app:showAsAction="never"/>
         </menu>
     </item>
+    <item
+        android:orderInCategory="300"
+        android:id="@+id/rotateScreen"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/twotone_screen_rotation_white_24"
+        />
 </menu>

@@ -22,7 +22,22 @@ public class TagFragment extends Fragment {
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View v = inflater.inflate(R.layout.activity_tag, container);
+        if(savedInstanceState!=null)
+        {
+            mTagSize = savedInstanceState.getInt("TagSize", 3);
+
+            if(savedInstanceState.getByteArray("TagSavedGameRow0") != null)
+            {
+                int moveCountRestore = savedInstanceState.getInt("TagMoveCount");
+
+                mTagController = new TagController(mTagSize);
+                for (int i = 0; i < mTagSize; i++) {
+                    mTagController.restoreGameFieldRow(i, savedInstanceState.getByteArray("TagSavedGameRow"+i));
+                }
+                mTagController.setMoveCount(moveCountRestore);
+            }
+        }
+        View v = inflater.inflate(R.layout.activity_tag, container, false);
 
         TagGameField = v.findViewById(R.id.TagGameField);
         tvMovesCnt = v.findViewById(R.id.movesCnt);
@@ -41,7 +56,7 @@ public class TagFragment extends Fragment {
         mTagController.createGameField();
 
 
-        return super.onCreateView(inflater, container, savedInstanceState);
+        return v;
     }
 
     @Override

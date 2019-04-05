@@ -1,7 +1,6 @@
 package com.psy.homework_03_03_2019;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,25 +19,32 @@ public class TTTFragment extends Fragment {
     int mTTTSize = 3;
     CheckBox mCbIsAiEnabled;
     boolean isAiEnabled = false;
+    boolean isInited = false;
 
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        if(!isInited) {
+            if (savedInstanceState != null && savedInstanceState.getByteArray("TTTSavedGame") != null) {
+                mTTTSize = savedInstanceState.getInt("TTTSize", 3);
+                isAiEnabled = savedInstanceState.getBoolean("isAiEnabled", true);
 
-        if(savedInstanceState!=null)
-        {
-            mTTTSize = savedInstanceState.getInt("TTTSize", 3);
-            isAiEnabled = savedInstanceState.getBoolean("isAiEnabled",true);
+                if (savedInstanceState.getByteArray("TTTSavedGame") != null) {
+                    mTTTController = new TTTController(this.getContext(), savedInstanceState.getByteArray("TTTSavedGame"));
+                    Log.d("TAG", "State is restored!");
+                    Log.d("TAG", "savedInstanceState mTTTController hashCode" + mTTTController.hashCode());
+                }
 
-            if(savedInstanceState.getByteArray("TTTSavedGame")!=null)
-                mTTTController = new TTTController(this.getContext(), savedInstanceState.getByteArray("TTTSavedGame"));
+            } else {
+                mTTTController = new TTTController(this, mTTTSize, TicTacToe.PLAYER_X);
+                Log.d("TAG", "mTTTSize = " + mTTTSize);
+                Log.d("TAG", "mTTTController hashCode" + mTTTController.hashCode());
+            }
         }
-        View v = inflater.inflate(R.layout.activity_tic_tac_toe,container);
+        isInited = true;
+        View v = inflater.inflate(R.layout.activity_tic_tac_toe,container, false);
 
-        if(mTTTController == null) {
-//                mTTTSize = 3;
-            mTTTController = new TTTController(this, mTTTSize, TicTacToe.PLAYER_X);
-            Log.d("TAG", "mTTTSize = " + mTTTSize );
-        }
+//        if(mTTTController == null) {
+//        }
         TTTGameField = v.findViewById(R.id.TTTgameField);
         tvCurrentTurn = v.findViewById(R.id.currentTurn);
         mCbIsAiEnabled = v.findViewById(R.id.aiEnabled);
@@ -48,7 +54,7 @@ public class TTTFragment extends Fragment {
 
         mTTTController.createGameField(inflater, TTTGameField, mTicTacToeClick);
 
-        return super.onCreateView(inflater, container, savedInstanceState);
+        return v;
     }
 
     @Override
@@ -56,9 +62,10 @@ public class TTTFragment extends Fragment {
         super.onSaveInstanceState(outState);
         outState.putInt("TTTSize", mTTTSize);
         outState.putBoolean("isAiEnabled",isAiEnabled);
-
         if(mTTTController != null) {
             outState.putByteArray("TTTSavedGame", mTTTController.saveGame());
+            Log.d("TAG", "State is saved!");
+            Log.d("TAG", "onSaveInstanceState mTTTController hashCode" + mTTTController.hashCode());
         }
 
     }
