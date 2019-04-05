@@ -33,8 +33,11 @@ public class MainActivity extends AppCompatActivity {
         if(savedInstanceState!=null)
         {
             mCurrentGameResId = savedInstanceState.getInt("CurrentGameResId");
-            mTTTFragment = (TTTFragment) savedInstanceState.getSerializable("tttFragment");
-            mTagFragment = (TagFragment) savedInstanceState.getSerializable("tagFragment");
+//            if(savedInstanceState.getSerializable("tttFragment")!=null)
+                mTTTFragment = (TTTFragment) savedInstanceState.getSerializable("tttFragment");
+//            if(savedInstanceState.getSerializable("tagFragment")!=null)
+                mTagFragment = (TagFragment) savedInstanceState.getSerializable("tagFragment");
+
             /*
             if(getSupportFragmentManager().getFragment(savedInstanceState, "tttFragment")!=null)
                 mTTTFragment = (TTTFragment) getSupportFragmentManager().getFragment(savedInstanceState, "tttFragment");
@@ -82,8 +85,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt("CurrentGameResId", mCurrentGameResId);
-        outState.putSerializable("tttFragment", mTTTFragment);
-        outState.putSerializable("tagFragment", mTagFragment);
+//        if(!mTTTFragment.isAdded())
+            outState.putSerializable("tttFragment", mTTTFragment);
+//        if(!mTagFragment.isAdded())
+            outState.putSerializable("tagFragment", mTagFragment);
 
         /*
         if(mTTTFragment.isAdded())

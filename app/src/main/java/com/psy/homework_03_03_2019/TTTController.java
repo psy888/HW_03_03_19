@@ -239,7 +239,7 @@ public class TTTController implements Serializable {
     {
         byte[] curGameField = new byte[mGame.getGameField().length + 1];
         curGameField[0] = (byte) mCurTurn;
-        for (int i = 1; i < mGame.getGameField().length; i++)
+        for (int i = 1; i <= mGame.getGameField().length; i++)
         {
             curGameField[i] = (byte) mGame.getGameField()[i-1];
         }
